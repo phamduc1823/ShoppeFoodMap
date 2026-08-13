@@ -1,5 +1,5 @@
 import Foundation
-@preconcurrency import CoreLocation
+import CoreLocation
 
 /// Apple CLGeocoder implementation of GeocodingServiceProtocol.
 public final class AppleGeocodingService: GeocodingServiceProtocol, @unchecked Sendable {

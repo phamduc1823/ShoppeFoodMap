@@ -62,9 +62,15 @@ public final class LocationService: NSObject, CLLocationManagerDelegate, Locatio
     public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         DispatchQueue.main.async {
             self.authorizationStatus = manager.authorizationStatus
+            #if os(iOS)
             if manager.authorizationStatus == .authorizedWhenInUse || manager.authorizationStatus == .authorizedAlways {
                 manager.startUpdatingLocation()
             }
+            #else
+            if manager.authorizationStatus == .authorizedAlways || manager.authorizationStatus == .authorized {
+                manager.startUpdatingLocation()
+            }
+            #endif
         }
     }
     
