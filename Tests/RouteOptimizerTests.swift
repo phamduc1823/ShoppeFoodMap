@@ -43,29 +43,29 @@ final class RouteOptimizerTests: XCTestCase {
         XCTAssertEqual(candidate.risk.numberOfLateOrders, 0)
     }
     
-    // Scenario 5 & 6: Newer Order Closer but Earlier Deadline (Reliability > Shortest Distance)
+    // Scenario 5 & 6: Urgent Order vs Flexible Order (Reliability > Shortest Distance)
     func testEarlierDeadlinePrioritizedOverDistance() async throws {
-        // Order A: Farther, but very tight deadline
+        // Order A: Urgent deadline (18 mins). Going directly arrives in 12 mins (ON-TIME). Taking detour to B causes lateness!
         let orderA = Order(
             orderNumber: "A_Tight",
             createdAt: baseTime,
-            restaurantName: "Rest A",
-            restaurantLatitude: 21.0500,
-            restaurantLongitude: 105.8600,
+            restaurantName: "Rest A Urgent",
+            restaurantLatitude: 21.0200,
+            restaurantLongitude: 105.8200,
             pickupReadyAt: baseTime,
             pickupDeadline: baseTime.addingTimeInterval(1800),
             customerName: "Cust A",
-            customerLatitude: 21.0600,
-            customerLongitude: 105.8600,
+            customerLatitude: 21.0300,
+            customerLongitude: 105.8300,
             deliveryWindowStart: baseTime.addingTimeInterval(300),
-            deliveryWindowEnd: baseTime.addingTimeInterval(420) // Tight 7 min deadline!
+            deliveryWindowEnd: baseTime.addingTimeInterval(1080) // 18 min deadline!
         )
         
-        // Order B: Closer, but flexible deadline
+        // Order B: Closer, but flexible deadline (90 mins)
         let orderB = Order(
             orderNumber: "B_Flexible",
             createdAt: baseTime,
-            restaurantName: "Rest B",
+            restaurantName: "Rest B Close",
             restaurantLatitude: 21.0050,
             restaurantLongitude: 105.8050,
             pickupReadyAt: baseTime,
@@ -74,7 +74,7 @@ final class RouteOptimizerTests: XCTestCase {
             customerLatitude: 21.0100,
             customerLongitude: 105.8100,
             deliveryWindowStart: baseTime.addingTimeInterval(3600),
-            deliveryWindowEnd: baseTime.addingTimeInterval(5400)
+            deliveryWindowEnd: baseTime.addingTimeInterval(5400) // 90 min deadline
         )
         
         let candidate = try await optimizer.optimize(
