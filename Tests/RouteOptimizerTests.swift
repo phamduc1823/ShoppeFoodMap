@@ -45,7 +45,7 @@ final class RouteOptimizerTests: XCTestCase {
     
     // Scenario 5 & 6: Urgent Order vs Flexible Order (Reliability > Shortest Distance)
     func testEarlierDeadlinePrioritizedOverDistance() async throws {
-        // Order A: Urgent deadline (4.5 mins). Going directly arrives in 3.4 mins (ON-TIME). Stopping at B causes lateness!
+        // Order A: Urgent deadline (6 mins). Going directly arrives in 4.5 mins (ON-TIME). Taking detour to B causes 6+ min lateness!
         let orderA = Order(
             orderNumber: "A_Tight",
             createdAt: baseTime,
@@ -58,21 +58,21 @@ final class RouteOptimizerTests: XCTestCase {
             customerLatitude: 21.0150,
             customerLongitude: 105.8150,
             deliveryWindowStart: baseTime.addingTimeInterval(60),
-            deliveryWindowEnd: baseTime.addingTimeInterval(270) // 4.5 min deadline!
+            deliveryWindowEnd: baseTime.addingTimeInterval(360) // 6.0 min deadline!
         )
         
-        // Order B: Closer to start, but flexible deadline (90 mins)
+        // Order B: Detour in opposite direction (2 km south-west), flexible deadline (90 mins)
         let orderB = Order(
             orderNumber: "B_Flexible",
             createdAt: baseTime,
-            restaurantName: "Rest B Close",
-            restaurantLatitude: 21.0050,
-            restaurantLongitude: 105.8050,
+            restaurantName: "Rest B Detour",
+            restaurantLatitude: 20.9850,
+            restaurantLongitude: 105.7850,
             pickupReadyAt: baseTime,
             pickupDeadline: baseTime.addingTimeInterval(3600),
             customerName: "Cust B",
-            customerLatitude: 21.0080,
-            customerLongitude: 105.8080,
+            customerLatitude: 20.9800,
+            customerLongitude: 105.7800,
             deliveryWindowStart: baseTime.addingTimeInterval(3600),
             deliveryWindowEnd: baseTime.addingTimeInterval(5400) // 90 min deadline
         )
