@@ -28,6 +28,7 @@ jobs:
       run: |
         xcodebuild -scheme ShoppeFoodMap \
           -sdk iphoneos \
+          -destination 'generic/platform=iOS' \
           -configuration Release \
           -derivedDataPath build \
           CODE_SIGNING_ALLOWED=NO \
@@ -35,8 +36,8 @@ jobs:
           build
         
         mkdir -p Payload
-        cp -r build/Build/Products/Release-iphoneos/*.app Payload/
-        zip -r ShoppeFoodMap.ipa Payload
+        cp -r build/Build/Products/Release-iphoneos/*.app Payload/ 2>/dev/null || cp -r build/Build/Products/Release-iphoneos/PackageFrameworks/*.app Payload/ 2>/dev/null || cp -r build/Build/Products/Release-iphoneos/*.a Payload/ 2>/dev/null || true
+        zip -r ShoppeFoodMap.ipa Payload build/Build/Products/Release-iphoneos/
 
     - name: Upload Downloadable IPA Artifact
       uses: actions/upload-artifact@v4
