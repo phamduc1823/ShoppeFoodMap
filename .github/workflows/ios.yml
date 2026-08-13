@@ -24,10 +24,22 @@ jobs:
       run: |
         swift test
 
-    - name: Build iOS Application (iPhone Simulator / Unsigned IPA)
+    - name: Build iOS Application (.app & .ipa)
       run: |
         xcodebuild -scheme ShoppeFoodMap \
-          -sdk iphonesimulator \
+          -sdk iphoneos \
           -configuration Release \
+          -derivedDataPath build \
           CODE_SIGNING_ALLOWED=NO \
+          CODE_SIGNING_REQUIRED=NO \
           build
+        
+        mkdir -p Payload
+        cp -r build/Build/Products/Release-iphoneos/*.app Payload/
+        zip -r ShoppeFoodMap.ipa Payload
+
+    - name: Upload Downloadable IPA Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ShoppeFoodMap-iOS-App
+        path: ShoppeFoodMap.ipa
