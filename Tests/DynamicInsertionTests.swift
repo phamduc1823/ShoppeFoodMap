@@ -1,4 +1,5 @@
 import XCTest
+import ShoppeFoodMap
 
 final class DynamicInsertionTests: XCTestCase {
     var mockRouting: MockRoutingService!
@@ -60,7 +61,7 @@ final class DynamicInsertionTests: XCTestCase {
             currentTime: baseTime
         )
         
-        XCTAssertEqual(eval.decision, .safeToAdd)
+        XCTAssertEqual(eval.decision, InsertionDecision.safeToAdd)
         XCTAssertTrue(eval.explanation.contains("SAFE TO ADD"))
     }
     
@@ -78,7 +79,7 @@ final class DynamicInsertionTests: XCTestCase {
             customerLatitude: 21.0200,
             customerLongitude: 105.8200,
             deliveryWindowStart: baseTime.addingTimeInterval(300),
-            deliveryWindowEnd: baseTime.addingTimeInterval(600) // Extremely tight: 10 mins!
+            deliveryWindowEnd: baseTime.addingTimeInterval(600) // Tight 10 min deadline!
         )
         
         let baselineRoute = try await optimizer.optimize(
@@ -111,7 +112,7 @@ final class DynamicInsertionTests: XCTestCase {
             currentTime: baseTime
         )
         
-        XCTAssertEqual(eval.decision, .doNotAdd)
+        XCTAssertEqual(eval.decision, InsertionDecision.doNotAdd)
         XCTAssertTrue(eval.explanation.contains("DO NOT ADD"))
     }
 }

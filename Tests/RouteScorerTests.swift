@@ -1,4 +1,5 @@
 import XCTest
+import ShoppeFoodMap
 
 final class RouteScorerTests: XCTestCase {
     var scorer: RouteScorer!

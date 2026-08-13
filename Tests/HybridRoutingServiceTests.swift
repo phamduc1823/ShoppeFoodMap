@@ -1,4 +1,5 @@
 import XCTest
+import ShoppeFoodMap
 
 final class HybridRoutingServiceTests: XCTestCase {
     func testOfflineFallbackRouting() async throws {

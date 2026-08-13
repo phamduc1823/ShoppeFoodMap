@@ -1,4 +1,5 @@
 import XCTest
+import ShoppeFoodMap
 
 final class RouteConstraintCheckerTests: XCTestCase {
     var constraintChecker: RouteConstraintChecker!

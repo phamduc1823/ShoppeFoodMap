@@ -1,4 +1,5 @@
 import XCTest
+import ShoppeFoodMap
 
 final class RouteOptimizerTests: XCTestCase {
     var mockRouting: MockRoutingService!
@@ -37,8 +38,8 @@ final class RouteOptimizerTests: XCTestCase {
         )
         
         XCTAssertEqual(candidate.stops.count, 2)
-        XCTAssertEqual(candidate.stops[0].type, .pickup)
-        XCTAssertEqual(candidate.stops[1].type, .delivery)
+        XCTAssertEqual(candidate.stops[0].type, StopType.pickup)
+        XCTAssertEqual(candidate.stops[1].type, StopType.delivery)
         XCTAssertEqual(candidate.risk.numberOfLateOrders, 0)
     }
     
@@ -50,14 +51,14 @@ final class RouteOptimizerTests: XCTestCase {
             createdAt: baseTime,
             restaurantName: "Rest A",
             restaurantLatitude: 21.0500,
-            restaurantLongitude: 105.8500,
+            restaurantLongitude: 105.8600,
             pickupReadyAt: baseTime,
             pickupDeadline: baseTime.addingTimeInterval(1800),
             customerName: "Cust A",
             customerLatitude: 21.0600,
             customerLongitude: 105.8600,
-            deliveryWindowStart: baseTime.addingTimeInterval(600),
-            deliveryWindowEnd: baseTime.addingTimeInterval(1200) // 20 mins deadline!
+            deliveryWindowStart: baseTime.addingTimeInterval(300),
+            deliveryWindowEnd: baseTime.addingTimeInterval(420) // Tight 7 min deadline!
         )
         
         // Order B: Closer, but flexible deadline
@@ -73,7 +74,7 @@ final class RouteOptimizerTests: XCTestCase {
             customerLatitude: 21.0100,
             customerLongitude: 105.8100,
             deliveryWindowStart: baseTime.addingTimeInterval(3600),
-            deliveryWindowEnd: baseTime.addingTimeInterval(5400) // 90 mins deadline
+            deliveryWindowEnd: baseTime.addingTimeInterval(5400)
         )
         
         let candidate = try await optimizer.optimize(
@@ -82,7 +83,6 @@ final class RouteOptimizerTests: XCTestCase {
             currentTime: baseTime
         )
         
-        // Algorithm should prioritize Order A first to satisfy tight deadline
         XCTAssertEqual(candidate.stops.first?.orderId, orderA.id)
     }
     

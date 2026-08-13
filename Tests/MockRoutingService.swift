@@ -1,4 +1,5 @@
 import Foundation
+import ShoppeFoodMap
 
 public final class MockRoutingService: RoutingServiceProtocol, @unchecked Sendable {
     public var predefinedDistances: [Coordinate: [Coordinate: Double]] = [:]
