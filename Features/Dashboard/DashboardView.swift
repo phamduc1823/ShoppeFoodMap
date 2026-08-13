@@ -124,9 +124,9 @@ public struct DashboardView: View {
                 }
             }
             .navigationTitle("Driver Optimizer")
-            .navigationBarTitleDisplayMode(.inline)
+            .inlineNavigationBarTitle()
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .platformTopBarTrailing) {
                     Button(action: { showingAddOrderSheet = true }) {
                         Image(systemName: "plus.circle.fill")
                             .foregroundColor(AppTheme.primaryOrange)

@@ -1,8 +1,8 @@
 import Foundation
-import CoreLocation
+@preconcurrency import CoreLocation
 
 /// Apple CLGeocoder implementation of GeocodingServiceProtocol.
-public final class AppleGeocodingService: GeocodingServiceProtocol {
+public final class AppleGeocodingService: GeocodingServiceProtocol, @unchecked Sendable {
     private let geocoder = CLGeocoder()
     
     public init() {}

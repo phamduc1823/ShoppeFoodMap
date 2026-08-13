@@ -43,7 +43,7 @@ public struct OrderListView: View {
             }
             .navigationTitle("Order Management")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .platformTopBarTrailing) {
                     Button(action: { showingForm = true }) {
                         Image(systemName: "plus")
                             .foregroundColor(AppTheme.primaryOrange)

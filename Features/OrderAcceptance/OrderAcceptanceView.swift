@@ -148,7 +148,7 @@ public struct OrderAcceptanceView: View {
                 }
             }
             .navigationTitle("Order Acceptance")
-            .navigationBarTitleDisplayMode(.inline)
+            .inlineNavigationBarTitle()
             .task {
                 await viewModel.evaluateNewOrder(candidateOrder, currentRoute: currentRoute, existingOrders: existingOrders)
             }

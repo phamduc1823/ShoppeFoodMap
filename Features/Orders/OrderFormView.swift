@@ -11,9 +11,9 @@ public struct OrderFormView: View {
     @State private var customerName = "Customer A"
     @State private var customerAddress = "12 Ba Dinh, Hanoi"
     
-    @State private var pickupReadyAt = Date().addingTimeInterval(300) // 5 mins from now
-    @State private var deliveryWindowStart = Date().addingTimeInterval(1800) // 30 mins
-    @State private var deliveryWindowEnd = Date().addingTimeInterval(2400) // 40 mins
+    @State private var pickupReadyAt = Date().addingTimeInterval(300)
+    @State private var deliveryWindowStart = Date().addingTimeInterval(1800)
+    @State private var deliveryWindowEnd = Date().addingTimeInterval(2400)
     @State private var isSubmitting = false
     @State private var errorMessage: String?
     
@@ -73,9 +73,9 @@ public struct OrderFormView: View {
                 .scrollContentBackground(.hidden)
             }
             .navigationTitle("New Delivery Order")
-            .navigationBarTitleDisplayMode(.inline)
+            .inlineNavigationBarTitle()
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .platformTopBarLeading) {
                     Button("Cancel") { dismiss() }
                 }
             }

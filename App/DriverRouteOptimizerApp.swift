@@ -10,22 +10,22 @@ struct DriverRouteOptimizerApp: App {
             TabView {
                 DashboardView(viewModel: container.dashboardViewModel)
                     .tabItem {
-                        Label("Dashboard", systemName: "arrow.triangle.turn.up.right.diamond.fill")
+                        Label("Dashboard", systemImage: "arrow.triangle.turn.up.right.diamond.fill")
                     }
                 
                 RouteMapView(viewModel: container.mapViewModel)
                     .tabItem {
-                        Label("Map Route", systemName: "map.fill")
+                        Label("Map Route", systemImage: "map.fill")
                     }
                 
                 OrderListView(viewModel: container.orderListViewModel)
                     .tabItem {
-                        Label("Orders", systemName: "takeoutbag.and.cup.and.straw.fill")
+                        Label("Orders", systemImage: "takeoutbag.and.cup.and.straw.fill")
                     }
                 
                 SettingsView(viewModel: container.settingsViewModel)
                     .tabItem {
-                        Label("Settings", systemName: "gearshape.fill")
+                        Label("Settings", systemImage: "gearshape.fill")
                     }
             }
             .accentColor(AppTheme.primaryOrange)
