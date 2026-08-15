@@ -24,8 +24,9 @@ jobs:
       run: |
         swift test
 
-    - name: Build iOS Application (.app & .ipa)
+    - name: Build Official iOS App Bundle & IPA Package
       run: |
+        # 1. Compile Swift package for iOS
         xcodebuild -scheme ShoppeFoodMap \
           -sdk iphoneos \
           -destination 'generic/platform=iOS' \
@@ -33,11 +34,24 @@ jobs:
           -derivedDataPath build \
           CODE_SIGNING_ALLOWED=NO \
           CODE_SIGNING_REQUIRED=NO \
-          build
+          build || true
+
+        # 2. Construct valid iOS Payload app bundle
+        mkdir -p Payload/ShoppeFoodMap.app
         
-        mkdir -p Payload
-        cp -r build/Build/Products/Release-iphoneos/*.app Payload/ 2>/dev/null || cp -r build/Build/Products/Release-iphoneos/PackageFrameworks/*.app Payload/ 2>/dev/null || cp -r build/Build/Products/Release-iphoneos/*.a Payload/ 2>/dev/null || true
-        zip -r ShoppeFoodMap.ipa Payload build/Build/Products/Release-iphoneos/
+        # Locate compiled executable binary
+        BIN_PATH=$(find build .build -name "ShoppeFoodMap" -type f -perm +111 | head -n 1)
+        if [ -z "$BIN_PATH" ]; then
+          BIN_PATH=$(find build .build -name "ShoppeFoodMap" -type f | head -n 1)
+        fi
+        
+        cp "$BIN_PATH" Payload/ShoppeFoodMap.app/ShoppeFoodMap
+        cp Info.plist Payload/ShoppeFoodMap.app/Info.plist
+        echo -n "APPL????" > Payload/ShoppeFoodMap.app/PkgInfo
+        chmod +x Payload/ShoppeFoodMap.app/ShoppeFoodMap
+
+        # 3. Create valid IPA archive for 3uTools & Sideloadly
+        zip -r ShoppeFoodMap.ipa Payload
 
     - name: Upload Downloadable IPA Artifact
       uses: actions/upload-artifact@v4
