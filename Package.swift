@@ -8,13 +8,13 @@ let package = Package(
         .macOS(.v14)
     ],
     products: [
-        .library(
+        .executable(
             name: "ShoppeFoodMap",
             targets: ["ShoppeFoodMap"]
         ),
     ],
     targets: [
-        .target(
+        .executableTarget(
             name: "ShoppeFoodMap",
             path: ".",
             exclude: ["Tests"],

@@ -26,7 +26,7 @@ jobs:
 
     - name: Build Official iOS App Bundle & IPA Package
       run: |
-        # 1. Compile Swift package for iOS
+        # 1. Compile Swift executable target for iOS device
         xcodebuild -scheme ShoppeFoodMap \
           -sdk iphoneos \
           -destination 'generic/platform=iOS' \
@@ -34,17 +34,18 @@ jobs:
           -derivedDataPath build \
           CODE_SIGNING_ALLOWED=NO \
           CODE_SIGNING_REQUIRED=NO \
-          build || true
+          build
 
         # 2. Construct valid iOS Payload app bundle
         mkdir -p Payload/ShoppeFoodMap.app
         
         # Locate compiled executable binary
-        BIN_PATH=$(find build .build -name "ShoppeFoodMap" -type f -perm +111 | head -n 1)
+        BIN_PATH=$(find build/Build/Products/Release-iphoneos -name "ShoppeFoodMap" -type f -not -name "*.swiftmodule" | head -n 1)
         if [ -z "$BIN_PATH" ]; then
-          BIN_PATH=$(find build .build -name "ShoppeFoodMap" -type f | head -n 1)
+          BIN_PATH=$(find build .build -name "ShoppeFoodMap" -type f -not -name "*.swiftmodule" | head -n 1)
         fi
         
+        echo "Found executable binary at: $BIN_PATH"
         cp "$BIN_PATH" Payload/ShoppeFoodMap.app/ShoppeFoodMap
         cp Info.plist Payload/ShoppeFoodMap.app/Info.plist
         echo -n "APPL????" > Payload/ShoppeFoodMap.app/PkgInfo
